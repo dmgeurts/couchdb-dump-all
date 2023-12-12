@@ -30,6 +30,8 @@ Optional settings:
 `HTTP=http` - Protocol: http or https? No need to use https when connecting to localhost.  
 `FAILS=5` - Failure threshold before giving up.
 
+These are the defaults when omitted from the configuration file.
+
 ## Installation
 
 The suggested location for both `couchdb-dump(-all).sh` is `/usr/local/bin/`.
