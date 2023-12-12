@@ -2,6 +2,10 @@
 
 Just a simple wrapper for [couchdb-dump](https://github.com/danielebailo/couchdb-dump) to dump all databases.
 
+## Requirements
+
+In addition to the requirements for `couchdb-dump.sh`: jk 
+
 ## Options
 
 No command line arguments, but does read a configuration file. The location of the config file is set to:
