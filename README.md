@@ -24,6 +24,12 @@ BACKUP_PATH="/var/backup/couchdb"
 
 Modify as required. Note, however, that credentials in a URL should only be used on localhost connections. Use at your peril.
 
+Optional settings: 
+
+`DATE=false` - Whether to include the date in the backup filename.
+`HTTP=http` - Protocol: http or https? No need to use https when connecting to localhost.
+`FAILS=5` - Failure threshold before giving up.
+
 ## Installation
 
 The suggested location for both `couchdb-dump(-all).sh` is `/usr/local/bin/`.
