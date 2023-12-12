@@ -15,6 +15,7 @@ CONFIG=/etc/backup/couchdb-dump-all.conf
 # Optional setting(s)
 DATE=false
 HTTP=http
+FAILS=5
 
 # Test if config file exists
 if [[ ! -f "$CONFIG" ]]; then
@@ -50,20 +51,24 @@ C_DONE=0
 C_FAIL=0
 # Backup each found DB
 for db in $ALL_DBS; do
-    echo "Starting backup of: $db"
-    db_enc=$(printf %s "$db" | jq -sRr @uri)
-    FILE=${db//\//_}
-    if STATUS=$(/usr/local/bin/couchdb-dump.sh -b -H $HOST -P $PORT -d $db_enc -f "$BACKUP_PATH/${FILE}${DATE}.json" -u $COUCHDB_USER -p $COUCHDB_PASS) &> /dev/null; then
-        ((C_DONE++))
-        echo "Finished backup of: $db"
+    if [[ $C_FAIL -le $FAILS ]]; then
+        echo "Starting backup of: $db"
+        db_enc=$(printf %s "$db" | jq -sRr @uri)
+        FILE=${db//\//_}
+        if STATUS=$(/usr/local/bin/couchdb-dump.sh -b -H $HOST -P $PORT -d $db_enc -f "$BACKUP_PATH/${FILE}${DATE}.json" -u $COUCHDB_USER -p $COUCHDB_PASS) &> /dev/null; then
+            ((C_DONE++))
+            echo "Finished backup of: $db"
+        else
+            rm "$BACKUP_PATH/${FILE}${DATE}.json"
+            ((C_FAIL++))
+            echo "$STATUS"
+            printf "ERROR: Backup failed for db: $db\n\n"
+        fi
     else
-        rm "$BACKUP_PATH/${FILE}${DATE}.json"
-        ((C_FAIL++))
-        echo "$STATUS"
-        printf "ERROR: Backup failed for db: $db\n\n"
+        echo "Too many failures, halting backup process."
     fi
 done
-if [[ "$C_FAIL" == "0" ]]; then
+if [[ $C_FAIL -eq 0 ]]; then
     FAILED=""
 else
     FAILED="Failures: $C_FAIL"
