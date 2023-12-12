@@ -1,2 +1,4 @@
 # couchdb-dump-all
-Wrapper for couch-dump to dump all databases
+
+Just a simple wrapper for [couchdb-dump](https://github.com/danielebailo/couchdb-dump) to dump all databases.
+
