@@ -22,7 +22,7 @@ PORT=5984
 BACKUP_PATH="/var/backup/couchdb"
 ```
 
-Modify as required. Note, however, that credentials in a URL should only be used on localhost connections. Use at your peril on non-localhost connections.
+Modify as required. Note, however, that credentials in a URL should only be used on localhost connections. Use at your peril.
 
 ## Installation
 
